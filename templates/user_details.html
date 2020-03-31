@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Secret
+{% endblock %}
+
+{% block content %}
+<h2>Details about user: {{user.username}}</h2>
+<div>First name: {{user.first_name}}</div>
+<div>Last name: {{user.last_name}}</div>
+<div>Email: {{user.email}}</div>
+<a href="/logout" class="btn btn-danger">Log out</a>
+
+<h2>Feedbacks</h2>
+{% for feedback in user.feedbacks %}
+<div>
+    <p>{{feedback.title}}</p>
+    <p>{{feedback.content}}</p>
+    <a href="/feedback/{{feedback.id}}/update">edit</a>
+</div>
+{% endfor %}
+
+{% endblock %}

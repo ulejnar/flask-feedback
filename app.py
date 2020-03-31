@@ -32,7 +32,7 @@ def register_form():
 
         username = form.username.data
         password = form.password.data
-        email = form.password.data
+        email = form.email.data
         first_name = form.first_name.data
         last_name = form.last_name.data
        
@@ -42,7 +42,7 @@ def register_form():
 
         session["username"] = user.username
 
-        return redirect("/secret")
+        return redirect(f"/users/{username}")
 
     else:
         return render_template("user_new.html", form=form)
@@ -62,8 +62,8 @@ def login_form():
         user = User.authenticate(username, password)
 
         if user:
-            session["user_username"] = user.username
-            return redirect("/secret")
+            session["username"] = user.username
+            return redirect(f"/users/{username}")
             
         else:
             form.username.errors = ["Bad name/password"]
@@ -71,7 +71,20 @@ def login_form():
     return render_template("user_login.html", form=form)
 
 
-@app.route('/secret')
-def show_secret_page():
+@app.route('/users/<username>')
+def show_secret_page(username):
+    """Show secret page to the logged in users """
 
-    return "You made it!"
+    user = User.query.get_or_404(username)
+    if "username" not in session:
+        flash("You must be logged in to view this page")
+        return redirect("/login")
+    else:
+        return render_template("user_details.html", user=user)
+
+
+@app.route('/logout')
+def logout_user():
+    """Logs user out and redirects to the homepage """
+    session.pop("username")
+    return redirect("/")
