@@ -15,6 +15,8 @@ user1 = User(username="ulrika", password="secret",
 user2 = User(username="genna", password="secret2", 
              email="genna@user.com", first_name="Genna",
              last_name="Mergola")
+
+
 db.session.add(user1)
 db.session.add(user2)
 db.session.commit()
